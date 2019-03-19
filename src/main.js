@@ -16,7 +16,6 @@ const siteMap = [
   { path: "01_object-literal", name: "オブジェクトリテラル" },
   { path: "02_arrow-function", name: "アロー関数" }
 ]
-
 liElm.appendChild(aElm)
 for (const [idx, { path, name }] of siteMap.entries()) {
   const newLiElm = liElm.cloneNode(true)

@@ -1,22 +1,7 @@
 {
-  "name": "dontokoi_ecmascript",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "parcel src/**/index.html"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yasushiasahi/dontokoi_ecmascript.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/yasushiasahi/dontokoi_ecmascript/issues"
-  },
-  "homepage": "https://github.com/yasushiasahi/dontokoi_ecmascript#readme",
   "devDependencies": {
     "parcel-bundler": "^1.12.2",
     "sass": "^1.17.3"
