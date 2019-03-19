@@ -14,7 +14,8 @@ app.appendChild(h1Elm)
  */
 const siteMap = [
   { path: "01_object-literal", name: "オブジェクトリテラル" },
-  { path: "02_arrow-function", name: "アロー関数" }
+  { path: "02_division_assignment", name: "分割代入" },
+  { path: "03_arrow-function", name: "アロー関数" }
 ]
 liElm.appendChild(aElm)
 for (const [idx, { path, name }] of siteMap.entries()) {
