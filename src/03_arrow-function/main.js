@@ -1,162 +1,188 @@
 import { addHeader, addTopLink } from "../utils/helper.js"
 const appElm = document.querySelector("#app")
-addHeader(appElm, "02_分割代入")
+const divElm = document.createElement("div")
+const h3Elm = document.createElement("h3")
+addHeader(appElm, "03_アロー関数")
+for (const [idx, text] of ["序", "破", "Q"].entries()) {
+  const buttonElm = document.createElement("button")
+  buttonElm.textContent = text
+  buttonElm.setAttribute("name", idx)
+  divElm.appendChild(buttonElm)
+}
+appElm.appendChild(divElm)
+appElm.appendChild(h3Elm)
 addTopLink(appElm)
 
 try {
   /* ***************************************************************
-   * これまでの代入
+   * 以前までの無名関数
    * ***************************************************************/
-  // 配列の代入
-  var scores = [90, 83, 53, 65]
-  var score1 = scores[0]
-  var score2 = scores[1]
-  var score3 = scores[2]
-  var score4 = scores[3]
-  var average = (score1 + score2 + score3 + score4) / scores.length
-  console.log("average =", average)
-
-  // オブジェクトの代入
-  var parson = {
-    firstName: "ジョルノ",
-    lastName: "ジョバーナ"
+  var getChildOld = function(num) {
+    return ["綾波", "惣流", "碇"][num - 1]
   }
-  var fn = parson.firstName
-  var ln = parson.lastName
-  var fullName = fn + "・" + ln
-  console.log("fullName =", fullName)
+
+  console.log("getChildOld(1) =", getChildOld(1))
+
+  /* ***************************************************************
+   * アロー関数１ (無名関数の省略記法)
+   * ***************************************************************
+   * (引数) => { 処理 } で無名関数を定義できます。
+   * 「function(引数) { 処理 }」と「(引数) => { 処理 }」はほぼほぼ同義です。
+   * *厳密には関数内におけるthisの扱いが異なります。この違いはものすごくに重要です。
+   * しかし、オブジェクト指向とかそういうそこそこ突っ込んだお話になるので、ここでは触れません。
+   * 気になる方は後で質問していただけると幸いです。
+   */
+  const getChildArrow = num => {
+    return ["綾波", "惣流", "碇"][num - 1]
+  }
 
   throw new Error("一時停止") // これを動かして先に進んでいく
 
-  /* ***************************************************************
-   * 分割代入　配列編
-   * ***************************************************************
-   * const [1番目の値,2番目の値] = 配列 　　　みたいな感じ
-   * 言葉では説明できない...
-   */
-  const scores2 = [70, 83, 23, 100]
-  const [s1, s2, aho, tensai] = scores2 // これが分割代入。もとの配列にそって好きな変数名を定義できる
-  console.log("*******************************************分割代入　配列編1")
-  console.log("s1 =", s1)
-  console.log("s2 =", s2)
-  console.log("aho =", aho)
-  console.log("tensai =", tensai)
+  console.log("*******************************************アロー関数１")
+  console.log("getChildArrow(2) =", getChildArrow(2))
 
-  const [one, two] = scores2 // すべてを指定しなくてもOK。ただし必ず先頭からになる
-  console.log("*******************************************分割代入　配列編1")
-  console.log("one =", one)
-  console.log("two =", two)
+  // 基本これだけです。何も難しいことはありまん。
+  // しかし、アロー関数にはより短く書く記法があり、さらに分割代入などが合わさって、初見殺しな見た目になりがちです。
 
   /* ***************************************************************
-   * 分割代入　配列編2 スプレット演算子 ...
+   * アロー関数２ 引数のカッコの省略
    * ***************************************************************
-   * 分割代入の最後の変数名の前に ... をつけると残りのすべて値が配列でとれる
+   * 引数が１つのみの場合、引数を囲む（）を省略できます。
    */
-  const [ich, ni, ...nokori] = scores2
-  console.log("*******************************************分割代入　配列編2")
-  console.log("ich =", ich)
-  console.log("ni =", ni)
-  console.log("nokori =", nokori)
-
-  /* ***************************************************************
-   * 分割代入　オブジェクト編1
-   * ***************************************************************
-   * const {プロパティ名1,プロパティ名2} = オブジェクト 　　　みたいな感じ
-   * これも言葉では説明できない...
-   */
-  const character = {
-    firstName: "ブローノ",
-    lastName: "ブチャラティ"
+  const getChildArrowNoParentheses = num => {
+    return ["綾波", "惣流", "碇"][num - 1]
   }
-  const { lastName, firstName } = character // 変数名は必ず元のオブジェクトのプロパティ名と一致しれいないとだめ。順番は関係ない。
-  console.log(
-    "*******************************************分割代入　オブジェクト編1"
-  )
-  console.log("lastName =", lastName)
-  console.log("firstName =", firstName)
+
+  console.log("*******************************************アロー関数２")
+  console.log("getChildArrowNoParentheses(3) =", getChildArrowNoParentheses(3))
+
+  // 引数が２つ以上ある場合には必ず()が必要です。以下はエラーです。
+  // const addNum = num1, num2 => {
+  //   return num1 + num2
+  // }
 
   /* ***************************************************************
-   * 分割代入　オブジェクト編2 スプレット演算子
+   * アロー関数３ {} と retrun の省略
    * ***************************************************************
-   * ...変数名 それまでに指定されていない残りすべての値がとれる。
+   * 式を挟まずに処理結果を帰す場合には{} と retrun を省略できます。
    */
-  const parts = {
-    part1: "ファントムブラッド",
-    part2: "戦闘潮流",
-    part3: "スターダストクルセイダース",
-    part4: "ダイヤモンドは砕けない",
-    part5: "黄金の嵐",
-    part6: "ストーンオーシャン",
-    part7: "スティール・ボール・ラン",
-    part8: "ジョジョリオン"
-  }
-  const { part3, part2, part7, ...left } = parts
+  const getChildArrowNoRetrun = num => ["綾波", "惣流", "碇"][num - 1]
+
+  console.log("*******************************************アロー関数３")
+  console.log("getChildArrowNoRetrun(1) =", getChildArrowNoRetrun(1))
+
+  /*
+   * アロー関数の説明としてはこれで本当におしまいです。
+   * ここからは省略記法のいろんなパターンを上げていきます。
+   */
+
+  // 計算結果を返す
+  const multiplNum = (num1, num2) => num1 * num2
+  console.log("multiplNum(3,6) =", multiplNum(3, 6))
+
+  // 配列を返す
+  const makeArray = (val1, val2, val3) => [val1, val2, val3]
   console.log(
-    "*******************************************分割代入　オブジェクト編2"
+    "makeArray('アダム','リリス','サキエル') =",
+    makeArray("アダム", "リリス", "サキエル")
   )
-  console.log("part3 =", part3)
-  console.log("part2 =", part2)
-  console.log("part7 =", part7)
-  console.log("left =", left)
 
-  // スプレット演算子は必ず分割代入中の最後で指定しないとだめ。以下の書き方はエラーになります。
-  // const [ich, ...nokori, ni ] = scores2
-  // const { part3, ...left, part5, part7 } = parts
-
-  /* ***************************************************************
-   * 分割代入　オブジェクト編3 プロパティ名とは違う変数名にしたい
-   * ***************************************************************
-   * { プロパティ名:変数名 } と書くと任意の変数名でうけられます。
-   */
-
-  const { part1: Jonathan, part2: Joseph, part3: Jotaro, part4: Josuke } = parts
+  // 上記は以下のように書いたほうがスマートです。そして、スプレット演算子を使う場合は引数が一つでも()は必須です。
+  const makeArraySmart = (...vals) => vals
   console.log(
-    "*******************************************分割代入　オブジェクト編3"
+    "makeArraySmart('アダム','リリス','サキエル') =",
+    makeArraySmart("アダム", "リリス", "サキエル")
   )
-  console.log("Jonathan = ", Jonathan)
-  console.log("Joseph = ", Joseph)
-  console.log("Jotaro = ", Jotaro)
-  console.log("Josuke = ", Josuke)
 
-  /* ***************************************************************
-   * 分割代入　オブジェクト編4 ネストしたオブジェクト
-   * ***************************************************************
-   * { プロパティ名:変数名 } で自由な変数名でうけらるということは、更に分割代入できます。
+  // オブジェクトを返す
+  // {}とretrunを省略してオブジェクトを返す場合にはオブジェクトを()で囲みます。ココ初見殺しポイントです。
+  const makeObject = (name, pilot, color) => ({ name, pilot, bodyColor: color })
+  console.log(
+    "makeObject('弐号機','惣流','赤') =",
+    makeObject("弐号機", "惣流", "赤")
+  )
+
+  // 引数を分割代入で受ける。分割代入で引数を受ける場合も()は必須。
+  const descriptWeapons = ([knife, axe, gun]) =>
+    knife +
+    "は" +
+    "分子レベルでものが切れる。" +
+    axe +
+    "と" +
+    gun +
+    "はすごく強い。"
+  const weapons = ["プログレッシブ・ナイフ", "スマッシュホーク", "ニードルガン"]
+  console.log("descriptWeapons(weapons) =", descriptWeapons(weapons))
+
+  /*
+   * とにかく retrun を書きたくない人が多く（僕もその部類）簡単な条件分岐はretrun無しで書かれることが多いです。
    */
-  const mainCharacters = {
-    part3: {
-      name: "空条承太郎",
-      age: 17,
-      stand: "スタープラチナ"
-    },
-    part4: {
-      name: "東方仗助",
-      age: 16,
-      stand: "クレイジー・ダイヤモンド"
-    },
-    part5: {
-      name: "ジョルノ・ジョバァーナ",
-      age: 15,
-      stand: "ゴールド・エクスペリエンス",
-      members: ["ブチャラティ", "ミスタ", "ナランチャ"]
+  // ３項演算子
+  const evaluatScore = score => {
+    if (score >= 90) {
+      return "合格"
+    } else {
+      return "不合格"
     }
   }
-  const {
-    part3: { name, stand },
-    part4: { name: name4 },
-    part5: {
-      members: [m1, m2, m3]
-    }
-  } = mainCharacters
-  console.log(
-    "*******************************************分割代入　オブジェクト編4"
+  const evaluatScoreShort = score => (score >= 70 ? "合格" : "不合格")
+  console.log("evaluatScore(48) =", evaluatScore(48))
+  console.log("evaluatScoreShort(71) =", evaluatScoreShort(71))
+
+  // && || で分岐
+  const requestAssignment = [
+    { name: "akashi", section: "新人" },
+    { name: "kimura", section: "イベント" },
+    { name: "zero", section: "" }
+  ]
+  const result = requestAssignment.map(
+    ({ name, section }) => name + "さんの希望は" + (section || "なし")
   )
-  console.log("name =", name)
-  console.log("stand =", stand)
-  console.log("name4 =", name4)
-  console.log("m1 =", m1)
-  console.log("m2 =", m2)
-  console.log("m3 =", m3)
+  console.log("result =", result)
+
+  /*
+   * 関数を返す関数 初見殺しポイント２ しかしながら画期的
+   */
+  const funcRetrunsFunc = str1 => str2 => str1 + str2
+
+  const funcA = funcRetrunsFunc("あんた")
+  console.log("funcA('ばか〜〜') =", funcA("ばか〜〜"))
+  console.log("funcA('死ぬわよ') =", funcA("死ぬわよ"))
+
+  // function で同じことを書くとかなりやぼったいです。
+  function func2(str1) {
+    return function(str2) {
+      return str1 + str2
+    }
+  }
+
+  // 実際こんな書き方使わんでしょww、と思うかもしれませんが、めちゃくちゃ使います。
+  // 特に多いのがDOMイベントのコールバック関数です。
+
+  const buttonElms = document.querySelectorAll("button")
+  const handleButtonClick = subTitles => e => {
+    const { name, textContent } = e.target
+    const fullTitle =
+      "ヱヴァンゲリヲン新劇場版:" + textContent + " " + subTitles[name]
+    h3Elm.textContent = fullTitle
+  }
+
+  for (var i = 0; i < buttonElms.length; i++) {
+    buttonElms[i].addEventListener(
+      "click",
+      handleButtonClick([
+        "YOU ARE (NOT) ALONE",
+        "YOU CAN (NOT) ADVANCE.",
+        "YOU CAN (NOT) REDO."
+      ])
+    )
+  }
+
+  /*
+
+
+
+   */
 } catch (err) {
   console.log(err.message)
 }
